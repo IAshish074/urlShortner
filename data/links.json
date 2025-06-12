@@ -1,0 +1,10 @@
+{
+  "cq": {
+    "original": "https://codequotient.com",
+    "short": "http://localhost:3000/cq"
+  },
+  "cb": {
+    "original": "https://cibil.com",
+    "short": "http://localhost:3000/cb"
+  }
+}
