@@ -3,7 +3,6 @@ import path from "path";
 import { createServer } from "http";
 import crypto from "crypto";
 
-// const PORT = 3000;
 const DATA_FILE = path.join("data", "links.json");
 
 const serveFile = async (res, filePath, contentType) => {
@@ -82,7 +81,6 @@ const server = createServer(async (req, res) => {
 
         const links = await loadLinks();
 
-      
         if (!shortCode) {
           do {
             shortCode = crypto.randomBytes(3).toString("hex");
@@ -92,9 +90,14 @@ const server = createServer(async (req, res) => {
           return res.end("Shortcode already exists. Please choose another");
         }
 
+        
+        const fullUrl = `${req.headers["x-forwarded-proto"] || "http"}://${
+          req.headers.host
+        }/${shortCode}`;
+
         links[shortCode] = {
           original: url,
-          short: `http://localhost:${PORT}/${shortCode}`,
+          short: fullUrl,
         };
 
         await saveLinks(links);
@@ -104,7 +107,7 @@ const server = createServer(async (req, res) => {
           JSON.stringify({
             success: true,
             shortCode,
-            shortUrl: links[shortCode].short,
+            shortUrl: fullUrl,
           })
         );
       } catch (err) {
@@ -116,8 +119,6 @@ const server = createServer(async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-
 server.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Server running on http://0.0.0.0:${PORT}`);
 });
-
