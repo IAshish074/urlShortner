@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev":"node --watch app.js",
-    "start":"node url/app.js"
+    "start":"nodemon url/app.js"
   },
   "type": "module",
   "author": "",
